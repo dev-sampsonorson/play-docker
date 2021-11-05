@@ -1,0 +1,28 @@
+version: "3"
+# Below is a `services` object where each key in that object
+# represents a different container that we want to run.
+#
+# We will use web to represent our node that that we have
+# already built. The we will use build to point it to the
+# current working directory, which is where it can find the
+# docker file. Then we also define the port forwarding configuration
+# as well.
+services:
+    web:
+        build: .
+        ports:
+            - "8080:8080"
+    # Now we have a separate container `db` which is our MySql
+    # database process.
+    db:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: "password"
+            MYSQL_DATABASE: "nodeapp-db"
+        volumes:
+            - db-data:/nodeapp-db
+
+# Here we define a volume to store the database data across
+# multiple containers.
+volumes:
+    db-data:
